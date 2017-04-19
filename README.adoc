@@ -1,16 +1,14 @@
 = Thymeleaf / Reactive Demo
 
-This is a really simple project to play around with some reactive features of the upcoming Spring and Thymeleaf projects.
+This project is a baseline to play around with some reactive features of the upcoming Spring and Thymeleaf releases.
 
 Nothing fancy here except the use of:
 
 . WebClient from spring-webflux
 . Flux / Mono from projectreator
-. The latest Thymeleaf Milestone release to enable the reactive parts.
-
+. The latest Thymeleaf Milestone release to enable the reactive parts (Server-Side Events)
 
 == About
-
 The application retrieves data from the https://swapi.co/api[StarWars API] and renders it in a table declared in a Thymeleaf template.
 
 == Playing around
@@ -19,6 +17,6 @@ You can use two switches in the `application.properties` to customize the behavi
     swapp.simulationdelay=false/true # if true: adds an additional timeout of one second between the flux elements
     swapp.reactive=false/true # if false: experience the old-fashioned sync behaviour
 
-== Disclaimer
-I took the https://github.com/thymeleaf/thymeleafsandbox-sse-webflux/blob/6f51fbae29c30d273a1683a46ffead26ae942738/src/main/java/thymeleafsandbox/sseflux/SSEFluxWebConfig.java[WebConfig] from the Thymeleaf sample project to get started.
-If there will be a thymeleaf-spring5 spring-boot starter this config class gets obsolete.
+== Info
+This project uses the https://github.com/thymeleaf/thymeleafsandbox-sse-webflux/blob/6f51fbae29c30d273a1683a46ffead26ae942738/src/main/java/thymeleafsandbox/sseflux/SSEFluxWebConfig.java[WebConfig] from the Thymeleaf sample project to get started.
+If there will be a _thymeleaf-spring5_ spring-boot-starter this config class gets obsolete.
