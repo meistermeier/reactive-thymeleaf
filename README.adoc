@@ -1,0 +1,24 @@
+= Thymeleaf / Reactive Demo
+
+This is a really simple project to play around with some reactive features of the upcoming Spring and Thymeleaf projects.
+
+Nothing fancy here except the use of:
+
+. WebClient from spring-webflux
+. Flux / Mono from projectreator
+. The latest Thymeleaf Milestone release to enable the reactive parts.
+
+
+== About
+
+The application retrieves data from the https://swapi.co/api[StarWars API] and renders it in a table declared in a Thymeleaf template.
+
+== Playing around
+You can use two switches in the `application.properties` to customize the behaviour of the application:
+
+    swapp.simulationdelay=false/true # if true: adds an additional timeout of one second between the flux elements
+    swapp.reactive=false/true # if false: experience the old-fashioned sync behaviour
+
+== Disclaimer
+I took the https://github.com/thymeleaf/thymeleafsandbox-sse-webflux/blob/6f51fbae29c30d273a1683a46ffead26ae942738/src/main/java/thymeleafsandbox/sseflux/SSEFluxWebConfig.java[WebConfig] from the Thymeleaf sample project to get started.
+If there will be a thymeleaf-spring5 spring-boot starter this config class gets obsolete.

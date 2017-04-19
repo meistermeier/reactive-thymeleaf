@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <title>Reactive SW-API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+
+  <body>
+
+    <h2>The reactive universe</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Movie</th>
+          <th>Episode</th>
+          <th>Release Date</th>
+          <th>Vehicles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--/*@thymesVar id="movies" type="com.meistermeier.reactive.Movie[]"*/-->
+        <tr th:each="movie : ${movies}">
+          <td th:text="${movie.title}">...</td>
+          <td th:text="${movie.episodeId}">...</td>
+          <td th:text="${#dates.format(movie.releaseDate, 'dd.MM.yyyy')}">...</td>
+          <td>
+            <ul th:if="${@environment.getProperty('swapp.reactive')}">
+              <li th:each="vehicle: ${movie.resolvedVehicles}" th:text="${vehicle.name}"></li>
+            </ul>
+            <ul th:if="!${@environment.getProperty('swapp.reactive')}">
+              <li th:each="vehicle: ${movie.resolvedSyncVehicles}" th:text="${vehicle.name}"></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </body>
+
+</html>
