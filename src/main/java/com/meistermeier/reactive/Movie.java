@@ -1,6 +1,9 @@
 package com.meistermeier.reactive;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,6 +16,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class Movie {
 
     private String title;
@@ -32,90 +36,6 @@ public class Movie {
     private List<String> vehicles;
     private List<String> characters;
     private List<String> planets;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getEpisodeId() {
-        return episodeId;
-    }
-
-    public void setEpisodeId(Integer episodeId) {
-        this.episodeId = episodeId;
-    }
-
-    public String getOpeningCrawl() {
-        return openingCrawl;
-    }
-
-    public void setOpeningCrawl(String openingCrawl) {
-        this.openingCrawl = openingCrawl;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public String getEdited() {
-        return edited;
-    }
-
-    public void setEdited(String edited) {
-        this.edited = edited;
-    }
-
-    public List<String> getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(List<String> species) {
-        this.species = species;
-    }
-
-    public List<String> getStarships() {
-        return starships;
-    }
-
-    public void setStarships(List<String> starships) {
-        this.starships = starships;
-    }
-
-    public List<String> getVehicles() {
-        return vehicles;
-    }
 
     /**
      * Resolves the vehicles in a synchronous way against the API (RestTemplate) and returns them.
@@ -142,42 +62,4 @@ public class Movie {
         return resolvedVehicles;
     }
 
-    public void setVehicles(List<String> vehicles) {
-        this.vehicles = vehicles;
-    }
-
-    public List<String> getCharacters() {
-        return characters;
-    }
-
-    public void setCharacters(List<String> characters) {
-        this.characters = characters;
-    }
-
-    public List<String> getPlanets() {
-        return planets;
-    }
-
-    public void setPlanets(List<String> planets) {
-        this.planets = planets;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", episodeId=" + episodeId +
-                ", openingCrawl='" + openingCrawl + '\'' +
-                ", director='" + director + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", url='" + url + '\'' +
-                ", created='" + created + '\'' +
-                ", edited='" + edited + '\'' +
-                ", species=" + species +
-                ", starships=" + starships +
-                ", vehicles=" + vehicles +
-                ", characters=" + characters +
-                ", planets=" + planets +
-                '}';
-    }
 }
