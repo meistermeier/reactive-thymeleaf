@@ -8,7 +8,6 @@
   </head>
 
   <body>
-
     <h2>The reactive universe</h2>
     <table>
       <thead>
@@ -26,11 +25,8 @@
           <td th:text="${movie.episodeId}">...</td>
           <td th:text="${#dates.format(movie.releaseDate, 'dd.MM.yyyy')}">...</td>
           <td>
-            <ul th:if="${@environment.getProperty('swapp.reactive')}">
+            <ul>
               <li th:each="vehicle: ${movie.resolvedVehicles}" th:text="${vehicle.name}"></li>
-            </ul>
-            <ul th:if="!${@environment.getProperty('swapp.reactive')}">
-              <li th:each="vehicle: ${movie.resolvedSyncVehicles}" th:text="${vehicle.name}"></li>
             </ul>
           </td>
         </tr>

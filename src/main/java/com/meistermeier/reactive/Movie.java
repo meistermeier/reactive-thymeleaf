@@ -117,18 +117,14 @@ public class Movie {
         return vehicles;
     }
 
+    /**
+     * Resolves the vehicles in a synchronous way against the API (RestTemplate) and returns them.
+     * There is no way (afaik) to get this data also as chunks in the response.
+     * Therefore it is a good place to do some loading for each movie element instead of faking a delay.
+     *
+     * @return the list of vehicles appearing in the movie
+     */
     public List<Vehicle> getResolvedVehicles() {
-        List<Vehicle> resolvedVehicles = new ArrayList<>();
-        WebClient client = WebClient.create();
-        for (String vehicleUrl : getVehicles()) {
-            resolvedVehicles.add(client.get().uri(vehicleUrl).accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .flatMap(clientResponse -> clientResponse.bodyToMono(Vehicle.class)).block());
-        }
-        return resolvedVehicles;
-    }
-
-    public List<Vehicle> getResolvedSyncVehicles() throws InterruptedException {
         List<Vehicle> resolvedVehicles = new ArrayList<>();
 
         // Somehow the api has to get an user agent value for this endpoint
