@@ -12,10 +12,13 @@ Nothing fancy here except the use of:
 The application retrieves data from the https://swapi.co/api[StarWars API] and renders it in a table declared in a Thymeleaf template.
 
 == Playing around
-You can use two switches in the `application.properties` to customize the behaviour of the application:
+You can use a switch in the `application.properties` to customize the behaviour of the application:
 
-    swapp.simulationdelay=false/true # if true: adds an additional timeout of one second between the flux elements
     swapp.reactive=false/true # if false: experience the old-fashioned sync behaviour
+
+=== Running the app
+The app has no custom port configured and will run on _http://localhost:8080_.
+To start the app just type `./mvnw spring-boot:run` in the commandline.
 
 == Info
 This project uses the https://github.com/thymeleaf/thymeleafsandbox-sse-webflux/blob/6f51fbae29c30d273a1683a46ffead26ae942738/src/main/java/thymeleafsandbox/sseflux/SSEFluxWebConfig.java[WebConfig] from the Thymeleaf sample project to get started.
