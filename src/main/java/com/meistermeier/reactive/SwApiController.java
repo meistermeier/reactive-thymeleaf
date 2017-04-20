@@ -13,45 +13,62 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class SwApiController {
 
+    private static final String API_URL = "http://swapi.co/api";
+
     @Value("${swapp.reactive}")
     private boolean reactive;
+    private final WebClient client = WebClient.create(API_URL);
 
     @RequestMapping("/")
     public String index(final Model model) {
+        List<Mono<Movie>> movieList = getMovies();
         if (reactive) {
-            // Flux#concat -> in order
-            // Flux#merge -> random
-            Flux<Movie> movies = Flux.concat(
-                    getMovie(1),
-                    getMovie(2),
-                    getMovie(3),
-                    getMovie(4),
-                    getMovie(5),
-                    getMovie(6),
-                    getMovie(7)
-            );
-            model.addAttribute("movies", new ReactiveDataDriverContextVariable(movies, 1, 1));
+            int elementsOfFluxInSseChunk = 1;
+            model.addAttribute("movies", new ReactiveDataDriverContextVariable(
+                    // Flux#concat -> in order
+                    // Flux#merge -> random
+                    Flux.concat(movieList),
+                    elementsOfFluxInSseChunk));
         } else {
+//            TODO need to figure out why this does block forever when put in the model
+//            List<Movie> collect = movieList.stream().map(Mono::block).collect(Collectors.toList());
+
             model.addAttribute("movies", new Movie[]{
-                    getMovie(1).block(),
-                    getMovie(2).block(),
-                    getMovie(3).block(),
-                    getMovie(4).block(),
-                    getMovie(5).block(),
-                    getMovie(6).block(),
-                    getMovie(7).block()
+                    movieList.get(0).block()
+//          If you need a proof that it may take even longer with more movies, go ahead and un-comment the lines below
+//                    movieList.get(1).block(),
+//                    movieList.get(2).block(),
+//                    movieList.get(3).block(),
+//                    movieList.get(4).block(),
+//                    movieList.get(5).block(),
+//                    movieList.get(6).block()
             });
         }
 
         return "index";
     }
 
+    private List<Mono<Movie>> getMovies() {
+        List<Mono<Movie>> movieList = new ArrayList<>();
+        movieList.add(getMovie(1));
+        movieList.add(getMovie(2));
+        movieList.add(getMovie(3));
+        movieList.add(getMovie(4));
+        movieList.add(getMovie(5));
+        movieList.add(getMovie(6));
+        movieList.add(getMovie(7));
+
+        return movieList;
+    }
+
     private Mono<Movie> getMovie(Integer movieId) {
-        WebClient client = WebClient.create("http://swapi.co/api");
         return client.get().uri("/films/{movieId}/", movieId).accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .flatMap(clientResponse -> clientResponse.bodyToMono(Movie.class));
