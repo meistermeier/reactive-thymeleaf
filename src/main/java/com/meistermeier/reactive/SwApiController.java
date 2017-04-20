@@ -37,13 +37,13 @@ public class SwApiController {
             model.addAttribute("movies", new ReactiveDataDriverContextVariable(movies, 1, 1));
         } else {
             model.addAttribute("movies", new Movie[]{
-                    getMovieSync(1),
-                    getMovieSync(2),
-                    getMovieSync(3),
-                    getMovieSync(4),
-                    getMovieSync(5),
-                    getMovieSync(6),
-                    getMovieSync(7),
+                    getMovie(1).block(),
+                    getMovie(2).block(),
+                    getMovie(3).block(),
+                    getMovie(4).block(),
+                    getMovie(5).block(),
+                    getMovie(6).block(),
+                    getMovie(7).block()
             });
         }
 
@@ -55,11 +55,6 @@ public class SwApiController {
         return client.get().uri("/films/{movieId}/", movieId).accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .flatMap(clientResponse -> clientResponse.bodyToMono(Movie.class));
-    }
-
-    private Movie getMovieSync(Integer movieId) {
-        RestTemplate client = new RestTemplateBuilder().rootUri("http://swapi.co/api").build();
-        return client.getForObject("/films/{movieId}/", Movie.class, movieId);
     }
 
 }
