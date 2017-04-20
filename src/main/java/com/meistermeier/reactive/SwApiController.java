@@ -17,9 +17,6 @@ import java.time.Duration;
 @Controller
 public class SwApiController {
 
-    @Value("${swapp.simulationdelay}")
-    private boolean simulationDelay;
-
     @Value("${swapp.reactive}")
     private boolean reactive;
 
@@ -36,7 +33,7 @@ public class SwApiController {
                     getMovie(5),
                     getMovie(6),
                     getMovie(7)
-            ).delayElements(getDelay());
+            );
             model.addAttribute("movies", new ReactiveDataDriverContextVariable(movies, 1, 1));
         } else {
             model.addAttribute("movies", new Movie[]{
@@ -51,14 +48,6 @@ public class SwApiController {
         }
 
         return "index";
-    }
-
-    private Duration getDelay() {
-        if (simulationDelay) {
-            return Duration.ofSeconds(1L);
-        } else {
-            return Duration.ZERO;
-        }
     }
 
     private Mono<Movie> getMovie(Integer movieId) {
