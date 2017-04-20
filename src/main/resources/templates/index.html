@@ -5,6 +5,7 @@
   <head>
     <title>Reactive SW-API</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" type="text/css"/>
   </head>
 
   <body>
@@ -18,15 +19,39 @@
           <th>Vehicles</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody th:remove="all-but-first">
         <!--/*@thymesVar id="movies" type="com.meistermeier.reactive.Movie[]"*/-->
-        <tr th:each="movie : ${movies}">
-          <td th:text="${movie.title}">...</td>
-          <td th:text="${movie.episodeId}">...</td>
-          <td th:text="${#dates.format(movie.releaseDate, 'dd.MM.yyyy')}">...</td>
-          <td>
+        <tr th:each="movie : ${movies}" class="movie-row">
+          <td th:text="${movie.title}" class="movie-title-cell">Return of the Jedi</td>
+          <td th:text="${movie.episodeId}" class="episode-number-cell">6</td>
+          <td th:text="${#dates.format(movie.releaseDate, 'dd.MM.yyyy')}" class="release-date-cell">25.05.1983</td>
+          <td class="vehicles-cell">
+            <ul th:remove="all-but-first">
+              <li th:each="vehicle: ${movie.resolvedVehicles}" th:text="${vehicle.name}">TIE/LN starfighter</li>
+              <li>TIE bomber</li>
+              <li>AT-AT</li>
+              <li>AT-ST</li>
+              <li>Sail barge</li>
+              <li>Bantha-II cargo skiff</li>
+              <li>TIE/IN interceptor</li>
+              <li>Imperial Speeder Bike</li>
+            </ul>
+          </td>
+        </tr>
+        <tr class="movie-row">
+          <td class="movie-title-cell">Return of the Jedi</td>
+          <td class="episode-number-cell">6</td>
+          <td class="release-date-cell">25.05.1983</td>
+          <td class="vehicles-cell">
             <ul>
-              <li th:each="vehicle: ${movie.resolvedVehicles}" th:text="${vehicle.name}"></li>
+              <li>TIE/LN starfighter</li>
+              <li>TIE bomber</li>
+              <li>AT-AT</li>
+              <li>AT-ST</li>
+              <li>Sail barge</li>
+              <li>Bantha-II cargo skiff</li>
+              <li>TIE/IN interceptor</li>
+              <li>Imperial Speeder Bike</li>
             </ul>
           </td>
         </tr>
