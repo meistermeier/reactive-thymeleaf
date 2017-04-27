@@ -1,6 +1,7 @@
 package com.meistermeier.reactive;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@PropertySource("classpath:messages.properties")
 public class SwApiController {
 
     private static final String API_URL = "http://swapi.co/api";
 
     @Value("${swapp.reactive}")
     private boolean reactive;
+
     private final WebClient client = WebClient.create(API_URL);
+
+    private final LocalCrawlService crawlService;
+
+    public SwApiController(LocalCrawlService crawlService) {
+        this.crawlService = crawlService;
+    }
 
     @RequestMapping("/")
     public String index(final Model model) {
@@ -49,6 +58,15 @@ public class SwApiController {
         }
 
         return "index";
+    }
+
+    @RequestMapping("/crawl")
+    public String crawler(final Model model) {
+        Flux<String> crawlText = crawlService.getCrawl();
+        model.addAttribute("crawlParts",
+                new ReactiveDataDriverContextVariable(crawlText, 1)
+        );
+        return "crawl";
     }
 
     private List<Mono<Movie>> getMovies() {
