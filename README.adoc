@@ -10,6 +10,7 @@ Nothing fancy here except the use of:
 
 == About
 The application retrieves data from the https://swapi.co/api[StarWars API] and renders it in a table declared in a Thymeleaf template.
+Additional there is a `/crawl` endpoint to retrieve a locally created flux (with simulated delay).
 
 == Playing around
 You can use a switch in the `application.properties` to customize the behaviour of the application:

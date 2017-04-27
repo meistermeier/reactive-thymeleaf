@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reactive SW-API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" type="text/css"/>
+</head>
+<body>
+<article>
+    <h4 th:text="#{EPISODE_IV_EPISODE}">EPISODE XYZ</h4>
+    <h2 th:text="#{EPISODE_IV_TITLE}">EPISODE XYZ</h2>
+    <div th:each="crawlPart : ${crawlParts}">
+        <p th:text="${crawlPart}"></p>
+    </div>
+</article>
+</body>
+</html>
