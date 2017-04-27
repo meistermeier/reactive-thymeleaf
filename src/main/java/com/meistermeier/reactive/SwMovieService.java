@@ -28,7 +28,7 @@ public class SwMovieService implements MovieService {
         return movieList;
     }
 
-    private Mono<Movie> getMovie(Integer movieId) {
+    Mono<Movie> getMovie(Integer movieId) {
         return client.get().uri("/films/{movieId}/", movieId).accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .flatMap(clientResponse -> clientResponse.bodyToMono(Movie.class));

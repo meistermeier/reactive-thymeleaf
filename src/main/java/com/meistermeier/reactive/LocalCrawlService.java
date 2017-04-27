@@ -9,17 +9,21 @@ import java.time.Duration;
 @Service
 public class LocalCrawlService implements CrawlService {
 
-    @Value("${EPISODE_IV_CRAWL_1}")
-    private String crawl1;
-    @Value("${EPISODE_IV_CRAWL_2}")
-    private String crawl2;
-    @Value("${EPISODE_IV_CRAWL_3}")
-    private String crawl3;
+    private final String crawl1;
+    private final String crawl2;
+    private final String crawl3;
+
+    public LocalCrawlService(@Value("${EPISODE_IV_CRAWL_1}") String crawl1,
+                             @Value("${EPISODE_IV_CRAWL_2}") String crawl2,
+                             @Value("${EPISODE_IV_CRAWL_3}") String crawl3) {
+        this.crawl1 = crawl1;
+        this.crawl2 = crawl2;
+        this.crawl3 = crawl3;
+    }
 
     @Override
     public Flux<String> getCrawl() {
-        return Flux.fromArray(new String[]{crawl1, crawl2, crawl3}).delayElements(Duration.ofSeconds(1));
+        return Flux.fromArray(new String[]{crawl1, crawl2, crawl3}).delayElements(Duration.ofSeconds(2));
     }
-
 
 }
