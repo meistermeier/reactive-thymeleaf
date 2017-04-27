@@ -2,38 +2,34 @@ package com.meistermeier.reactive;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @PropertySource("classpath:messages.properties")
 public class SwApiController {
 
-    private static final String API_URL = "http://swapi.co/api";
 
     @Value("${swapp.reactive}")
     private boolean reactive;
 
-    private final WebClient client = WebClient.create(API_URL);
+    private final CrawlService crawlService;
+    private final MovieService movieService;
 
-    private final LocalCrawlService crawlService;
-
-    public SwApiController(LocalCrawlService crawlService) {
+    public SwApiController(CrawlService crawlService, MovieService movieService) {
         this.crawlService = crawlService;
+        this.movieService = movieService;
     }
 
     @RequestMapping("/")
     public String index(final Model model) {
-        List<Mono<Movie>> movieList = getMovies();
+        List<Mono<Movie>> movieList = movieService.getMovies();
         if (reactive) {
             int elementsOfFluxInSseChunk = 1;
             model.addAttribute("movies", new ReactiveDataDriverContextVariable(
@@ -67,25 +63,6 @@ public class SwApiController {
                 new ReactiveDataDriverContextVariable(crawlText, 1)
         );
         return "crawl";
-    }
-
-    private List<Mono<Movie>> getMovies() {
-        List<Mono<Movie>> movieList = new ArrayList<>();
-        movieList.add(getMovie(1));
-        movieList.add(getMovie(2));
-        movieList.add(getMovie(3));
-        movieList.add(getMovie(4));
-        movieList.add(getMovie(5));
-        movieList.add(getMovie(6));
-        movieList.add(getMovie(7));
-
-        return movieList;
-    }
-
-    private Mono<Movie> getMovie(Integer movieId) {
-        return client.get().uri("/films/{movieId}/", movieId).accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(Movie.class));
     }
 
 }
