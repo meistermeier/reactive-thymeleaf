@@ -2,10 +2,7 @@ package com.meistermeier.reactive;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import reactor.test.StepVerifier;
 
 class SwMovieServiceTest {
 
@@ -18,9 +15,9 @@ class SwMovieServiceTest {
                 return Mono.just(new Movie());
             }
         };
-        List<Mono<Movie>> movies = service.getMovies();
-        int expectedMovieCount = 7;
-        assertEquals(movies.size(), expectedMovieCount);
+        StepVerifier.create(service.getMovies())
+                .expectNextCount(6)
+                .verifyComplete();
     }
 
 }

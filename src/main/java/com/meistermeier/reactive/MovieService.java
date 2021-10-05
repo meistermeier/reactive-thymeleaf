@@ -1,9 +1,7 @@
 package com.meistermeier.reactive;
 
-import reactor.core.publisher.Mono;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface MovieService {
-    List<Mono<Movie>> getMovies();
+    Flux<Movie> getMovies();
 }

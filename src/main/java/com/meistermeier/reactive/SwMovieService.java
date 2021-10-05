@@ -3,34 +3,29 @@ package com.meistermeier.reactive;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SwMovieService implements MovieService {
 
-    private static final String API_URL = "http://swapi.co/api";
+    private static final String API_URL = "https://swapi.dev/api";
     private final WebClient client = WebClient.create(API_URL);
 
     @Override
-    public List<Mono<Movie>> getMovies() {
-        List<Mono<Movie>> movieList = new ArrayList<>();
-        movieList.add(getMovie(1));
-        movieList.add(getMovie(2));
-        movieList.add(getMovie(3));
-        movieList.add(getMovie(4));
-        movieList.add(getMovie(5));
-        movieList.add(getMovie(6));
-        movieList.add(getMovie(7));
-
-        return movieList;
+    public Flux<Movie> getMovies() {
+        return Flux.concat(
+                getMovie(1),
+                getMovie(2),
+                getMovie(3),
+                getMovie(4),
+                getMovie(5),
+                getMovie(6)
+        );
     }
 
     Mono<Movie> getMovie(Integer movieId) {
         return client.get().uri("/films/{movieId}/", movieId).accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(Movie.class));
+                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(Movie.class));
     }
 }

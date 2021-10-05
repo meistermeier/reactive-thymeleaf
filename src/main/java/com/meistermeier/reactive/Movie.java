@@ -42,6 +42,11 @@ public class Movie {
      * @return the list of vehicles appearing in the movie
      */
     public List<Vehicle> getResolvedVehicles() {
+        List<String> vehicleNames = getVehicles();
+        if (vehicleNames == null) {
+            return Collections.emptyList();
+        }
+
         List<Vehicle> resolvedVehicles = new ArrayList<>();
 
         // Somehow the api has to get an user agent value for this endpoint
@@ -52,7 +57,7 @@ public class Movie {
 
         RestTemplate client = new RestTemplate();
 
-        for (String vehicleUrl : getVehicles()) {
+        for (String vehicleUrl : vehicleNames) {
             resolvedVehicles.add(client.exchange(vehicleUrl, HttpMethod.GET, entity, Vehicle.class).getBody());
 
         }
